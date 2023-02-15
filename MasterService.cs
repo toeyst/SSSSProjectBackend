@@ -49,6 +49,40 @@ namespace Service
         KeywordsColor = g.SelectMany(k => k.KeywordsColor).Distinct().OrderBy(n => n).ToList()
     })
     .ToList();
+            string input = "i want a black sneaker for male ";
+
+            //var keywords = new List<Keywords>
+            //{
+            //    // your keywords data here
+            //};
+
+            // Split the input into keywords
+            var inputKeywords = input.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                .Where(x => x != "i" && x != "want" && x != "a" && x != "an" && x != "with" && x != "or")
+                .ToList();
+
+            // Filter the keywords data based on the input keywords
+            var result = keywords
+                .Select(k => new
+                {
+                    Types = k.KeywordsType.Intersect(inputKeywords),
+                    Colors = k.KeywordsColor.Intersect(inputKeywords),
+                    Names = k.KeywordsName.Intersect(inputKeywords),
+                    Sexs = k.KeywordsSex.Intersect(inputKeywords)
+
+                })
+                .FirstOrDefault(r => r.Types.Any() && r.Colors.Any());
+
+            // Extract the relevant information from the result
+            if (result != null)
+            {
+                var comparedtypes = result.Types.ToList();
+                var comparedcolors = result.Colors.ToList();
+                var comparedsexs = result.Sexs.ToList();
+                var comparedNames = result.Names.ToList();
+                // Do something with the extracted information
+            }
+
 
             return keywords.ToList();
         }
