@@ -1,6 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using SSSSProject.Data;
 using SSSSProject.Models;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using System.Linq;
+using Microsoft.Data.SqlClient;
+using System.Data;
 
 namespace Service
 {
@@ -49,7 +53,7 @@ namespace Service
         KeywordsColor = g.SelectMany(k => k.KeywordsColor).Distinct().OrderBy(n => n).ToList()
     })
     .ToList();
-            string input = "i want a black sneaker for male ";
+            string input = "i want a black  or red sneaker for male ";
 
             //var keywords = new List<Keywords>
             //{
@@ -80,8 +84,71 @@ namespace Service
                 var comparedcolors = result.Colors.ToList();
                 var comparedsexs = result.Sexs.ToList();
                 var comparedNames = result.Names.ToList();
+                string concatenatedStringColor = "";
+                foreach (string str in comparedcolors)
+                {
+                    concatenatedStringColor += str + ";"; // use a semicolon as a separator
+                }
+
+                // Remove the trailing separator
+                if (!string.IsNullOrEmpty(concatenatedStringColor))
+                {
+                    concatenatedStringColor = concatenatedStringColor.Substring(0, concatenatedStringColor.Length - 1);
+                    string[] colorArray = concatenatedStringColor.Split(';');
+
+                    List<ProductDetail> selectedProducts = (from p in productDetail
+                                                            where colorArray.Contains(p.ProductColor)
+                                                            select new ProductDetail
+                                                            {
+                                                                ProductColor = p.ProductColor,
+                                                                ProductName = p.ProductName,
+                                                                ProductSex = p.ProductSex,
+                                                                ProductType = p.ProductType
+                                                            }).ToList();
+                }
                 // Do something with the extracted information
+                //string color_query = "";
+                //if (comparedcolors.Count > 0)
+                //{
+                //    string colors = string.Join(",", comparedcolors);
+                //    color_query = $"ProductColor in ({colors})";
+                //}
+
+                //string query = "SELECT * FROM ProductDetail WHERE ProductType=@Type AND ProductColor IN @Colors";
+                //// Create a connection to the database
+                //string connectionString = "Data Source=LAPTOP-B6ILTE6S;Initial Catalog=SSSSProject;Application Name = SSSSProject;trusted_connection=true;encrypt=false";
+                //using (SqlConnection connection = new SqlConnection(connectionString))
+                //{
+                //    // Open the connection
+                //    connection.Open();
+
+                //    // Create a command object with the SQL query and the connection
+
+
+                //    using (SqlCommand command = new SqlCommand(query, connection))
+                //    {
+                //        // Execute the query and get the results
+                //        command.Parameters.AddWithValue("@Type", comparedtypes);
+                //        command.Parameters.AddWithValue("@Colors", comparedcolors.ToArray());
+                //        using (SqlDataReader reader = command.ExecuteReader())
+                //        {
+                //            // Print the results to the console
+                //            while (reader.Read())
+                //            {
+                //                Console.WriteLine($"ID: {reader.GetInt32(0)}, Name: {reader.GetString(1)}, Type: {reader.GetString(2)}, Color: {reader.GetString(3)}, Sex: {reader.GetString(4)}, Price: {reader.GetDecimal(5)}");
+                //            }
+                //        }
+                //    }
+                //}
+                //var lin = _sSSSProjectContext.ProductDetail
+                //    .Where(p => comparedtypes.Contains(p.ProductType) && comparedcolors.Contains(p.ProductColor))
+                //    .ToList();
+
+                //string query = $"SELECT * FROM ProductDetail WHERE ProductType='{comparedtypes}' and ProductColor in ({color_query})";
             }
+
+
+
 
 
             return keywords.ToList();
