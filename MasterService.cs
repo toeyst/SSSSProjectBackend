@@ -5,19 +5,21 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using System.Linq;
 using Microsoft.Data.SqlClient;
 using System.Data;
+using Microsoft.AspNetCore.Cors;
 
 namespace Service
 {
     public interface IMasterService
     {
-        Task<List<ProductDetail>> GetProductDetail();
+        Task<List<ProductDetail>> GetProductDetail(string input);
     }
     public class MasterService : IMasterService
     {
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly SSSSProjectContext _sSSSProjectContext;
         private readonly IConfiguration configuration;
-        
+
+
 
         public MasterService(IHttpContextAccessor httpContextAccessor, SSSSProjectContext _sSSSProjectContext, IConfiguration configuration)
         {
@@ -26,7 +28,8 @@ namespace Service
             this.configuration = configuration;
         }
 
-        public async Task<List<ProductDetail>> GetProductDetail()
+       
+        public async Task<List<ProductDetail>> GetProductDetail(string input)
 
         {
             var productDetail = await _sSSSProjectContext.ProductDetail.Select(s => new ProductDetail
@@ -56,7 +59,7 @@ namespace Service
         KeywordsColor = g.SelectMany(k => k.KeywordsColor).Distinct().OrderBy(n => n).ToList()
     })
     .ToList();
-            string input = "i want a blue or red sneaker for female";
+            //string input = "i want a blue or red sneaker ";
 
        
 

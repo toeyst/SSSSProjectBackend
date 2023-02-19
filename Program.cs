@@ -15,16 +15,36 @@ builder.Services.AddDbContext<SSSSProjectContext>(o => o.UseSqlServer(builder.Co
 builder.Services.AddTransient<IMasterService,MasterService >();
 builder.Services.AddScoped<IMasterService, MasterService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", builder =>
+    {
+        builder.WithOrigins("http://localhost:5173")
+               .AllowAnyHeader()
+               .AllowAnyMethod()
+               .AllowCredentials()
+               .WithExposedHeaders("Access-Control-Allow-Origin");
+    });
+});
+
 
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseRouting(); // add this line
+app.UseCors("CorsPolicy"); // add this line
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 
 app.UseHttpsRedirection();
 
