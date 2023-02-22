@@ -64,7 +64,8 @@ namespace Service
        
 
             // Split the input into keywords
-            var inputKeywords = input.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+            var inputKeywords = input.Replace(",", "")
+                .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
                 .Where(x => x != "i" && x != "want" && x != "a" && x != "an" && x != "with" && x != "or")
                 .ToList();
 
@@ -78,7 +79,7 @@ namespace Service
                     Sexs = k.KeywordsSex.Intersect(inputKeywords)
 
                 })
-                .FirstOrDefault(r => r.Types.Any() && r.Colors.Any());
+                .FirstOrDefault(r => r.Types.Any() || r.Colors.Any() || r.Names.Any() || r.Sexs.Any());
 
             // Extract the relevant information from the result
             if (result != null)
