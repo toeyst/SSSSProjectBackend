@@ -39,6 +39,7 @@ namespace Service
                 ProductName = s.ProductName,
                 ProductSex = s.ProductSex,
                 ProductType = s.ProductType,
+                ProductPicture = s.ProductPicture
             }).ToListAsync();
 
             var keywords = productDetail
@@ -131,7 +132,9 @@ namespace Service
                                                                 ProductColor = p.ProductColor,
                                                                 ProductName = p.ProductName,
                                                                 ProductSex = p.ProductSex,
-                                                                ProductType = p.ProductType
+                                                                ProductType = p.ProductType,
+                                                                ProductPicture= p.ProductPicture,
+                                                                ProductId= p.ProductId
                                                             }).ToList();
                     return selectedProducts.ToList();
 
@@ -154,7 +157,9 @@ namespace Service
                                                                 ProductColor = p.ProductColor,
                                                                 ProductName = p.ProductName,
                                                                 ProductSex = p.ProductSex,
-                                                                ProductType = p.ProductType
+                                                                ProductType = p.ProductType,
+                                                                ProductPicture = p.ProductPicture,
+                                                                ProductId = p.ProductId
                                                             }).ToList();
                     return selectedProducts.ToList();
 
@@ -183,7 +188,9 @@ namespace Service
                                                                 ProductColor = p.ProductColor,
                                                                 ProductName = p.ProductName,
                                                                 ProductSex = p.ProductSex,
-                                                                ProductType = p.ProductType
+                                                                ProductType = p.ProductType,
+                                                                ProductPicture = p.ProductPicture,
+                                                                ProductId = p.ProductId
                                                             }).ToList();
                     return selectedProducts.ToList();
 
@@ -204,7 +211,9 @@ namespace Service
                                                                 ProductColor = p.ProductColor,
                                                                 ProductName = p.ProductName,
                                                                 ProductSex = p.ProductSex,
-                                                                ProductType = p.ProductType
+                                                                ProductType = p.ProductType,
+                                                                ProductPicture = p.ProductPicture,
+                                                                ProductId = p.ProductId
                                                             }).ToList();
                     return selectedProducts.ToList();
 
@@ -223,7 +232,9 @@ namespace Service
                                                                 ProductColor = p.ProductColor,
                                                                 ProductName = p.ProductName,
                                                                 ProductSex = p.ProductSex,
-                                                                ProductType = p.ProductType
+                                                                ProductType = p.ProductType,
+                                                                ProductPicture = p.ProductPicture,
+                                                                ProductId = p.ProductId
                                                             }).ToList();
                     return selectedProducts.ToList();
 
@@ -240,7 +251,32 @@ namespace Service
                                                                 ProductColor = p.ProductColor,
                                                                 ProductName = p.ProductName,
                                                                 ProductSex = p.ProductSex,
-                                                                ProductType = p.ProductType
+                                                                ProductType = p.ProductType,
+                                                                ProductPicture = p.ProductPicture,
+                                                                ProductId = p.ProductId
+
+                                                            }).ToList();
+                    return selectedProducts.ToList();
+
+                }
+                //check type and sex
+                else if (!string.IsNullOrEmpty(concatenatedStringSex) && string.IsNullOrEmpty(concatenatedStringColor) && !string.IsNullOrEmpty(concatenatedStringTypes) && string.IsNullOrEmpty(concatenatedStringName))
+                {
+                    concatenatedStringTypes = concatenatedStringTypes.Substring(0, concatenatedStringTypes.Length - 1);
+                    //ตัด;
+                    string[] typeArray = concatenatedStringTypes.Split(';');
+                    concatenatedStringSex = concatenatedStringSex.Substring(0, concatenatedStringSex.Length - 1);
+                    string[] SexArray = concatenatedStringSex.Split(";");
+                    List<ProductDetail> selectedProducts = (from p in productDetail
+                                                            where SexArray.Contains(p.ProductSex) && typeArray.Contains(p.ProductType)
+                                                            select new ProductDetail
+                                                            {
+                                                                ProductColor = p.ProductColor,
+                                                                ProductName = p.ProductName,
+                                                                ProductSex = p.ProductSex,
+                                                                ProductType = p.ProductType,
+                                                                ProductPicture = p.ProductPicture,
+                                                                ProductId = p.ProductId
 
                                                             }).ToList();
                     return selectedProducts.ToList();
