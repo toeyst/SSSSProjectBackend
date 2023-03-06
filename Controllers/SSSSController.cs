@@ -33,5 +33,22 @@ namespace SSSSProject.Controllers
             }
             
         }
+        [HttpPost("GetAllProduct")]
+
+        [EnableCors("CorsPolicy")]
+        public async Task<IActionResult> GetAllProduct()
+        {
+            try
+            {
+                var allProduct = await masterService.GetAllProduct();
+                Response.Headers.Add("Access-Control-Allow-Origin", "*");
+                return Ok(allProduct);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+
+        }
     }
 }
