@@ -6,6 +6,7 @@ using System.Linq;
 using Microsoft.Data.SqlClient;
 using System.Data;
 using Microsoft.AspNetCore.Cors;
+using System.Text.RegularExpressions;
 
 namespace Service
 {
@@ -62,8 +63,10 @@ namespace Service
     })
     .ToList();
             //string input = "i want a blue or red sneaker ";
+           
+            
+             input = Regex.Replace(Regex.Replace(input, @"\brunning\b", "run"), @"\bsneakers?\b", "sneaker");
 
-       
 
             // Split the input into keywords
             var inputKeywords = input.Replace(",", "")
