@@ -67,6 +67,14 @@ namespace Service
             
              input = Regex.Replace(Regex.Replace(input, @"\brunning\b", "run"), @"\bsneakers?\b", "sneaker");
 
+            Regex femaleRegex = new Regex(@"\b(woman|lady|girl|feminine gender)\b", RegexOptions.IgnoreCase);
+            Regex maleRegex = new Regex(@"\b(man|gentleman|boy|men|masculine gender)\b", RegexOptions.IgnoreCase);
+
+            // Replace male synonyms with "male"
+            input = maleRegex.Replace(input, "male");
+
+            // Replace female synonyms with "female"
+            input = femaleRegex.Replace(input, "female");
 
             // Split the input into keywords
             var inputKeywords = input.Replace(",", "")
